@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <servlet>
+        <servlet-name>Consulta</servlet-name>
+        <servlet-class>servlet.Consulta</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AgregarMulta</servlet-name>
+        <servlet-class>servlet.AgregarMulta</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BorrarServlet</servlet-name>
+        <servlet-class>servlet.BorrarServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Consulta</servlet-name>
+        <url-pattern>/Consulta</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AgregarMulta</servlet-name>
+        <url-pattern>/AgregarMulta</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BorrarServlet</servlet-name>
+        <url-pattern>/BorrarServlet</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+</web-app>

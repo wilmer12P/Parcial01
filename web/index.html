@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body onload="mostrar();">
+        <div>Agregar Datos</div>
+
+        <input type="text" id="DNI" name="DNI" placeholder="DNI">
+        <SELECT id="multa" name="multa" SIZE=1 onchange="monto()"> 
+            <OPTION>multas</OPTION>
+            <OPTION value="Alta Velocidad">Alta Velocidad</OPTION>
+            <OPTION value="Pasa la luz roja">Pasa la luz roja</OPTION>
+            <OPTION value="Estacionar zona pro">Estacionar zona pro</OPTION>
+            <OPTION value="Pico placa">Pico placa</OPTION> 
+        </SELECT>
+        <input type="text" id="monto" name="monto" placeholder="monto">
+        
+        <button onclick="agregar();">Registrar</button>
+
+        <br><br>
+        <table id="myTable" cellpadding="1" border="1" STYLE="border-collapse:collapse;width:100%">
+            <tr> 
+                <th>Codigo</th>
+                <th>DNI</th>
+                <th>Multa</th>
+                <th>Monto</th>
+                <th colspan="3">Acciones</th>
+            </tr>
+        </table>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script type="text/javascript">
+            function mostrar() {
+                $.ajax({
+                    method: 'POST',
+                    url: 'Consulta',
+                    success: function (msg) {
+
+                        var tabla = document.getElementById("myTable");
+                        for (var i = 0; i < msg.length; i++) {
+
+                            var fila = tabla.insertRow(1);
+
+                            var celda0 = fila.insertCell(0);
+                            var celda1 = fila.insertCell(1);
+                            var celda2 = fila.insertCell(2);
+                            var celda3 = fila.insertCell(3);
+                            var celda4 = fila.insertCell(4);
+
+
+                            celda0.innerHTML = msg[i].codigo;
+                            celda1.innerHTML = msg[i].DNI;
+                            celda2.innerHTML = msg[i].multa;
+                            celda3.innerHTML = msg[i].monto;
+                            celda4.innerHTML = '<button onclick="borrar(this, ' + msg[i].codigo + ')" >Borrar</button>';
+
+                        }
+                    },
+                    error: function (msg) {
+                        console.error(msg);
+                    }
+                });
+            }
+            function agregar() {
+
+                var DNI = document.getElementById("DNI").value;
+                var multa = document.getElementById("multa").value;
+                var monto = document.getElementById("monto").value;
+
+                $.ajax({
+                    method: 'POST',
+                    url: 'AgregarMulta',
+                    data: {
+
+                        DNI: DNI,
+                        multa: multa,
+                        monto: monto
+
+                    },
+                    success: function (msg) {
+                        console.log(msg);
+                        location.reload();
+
+                    },
+                    error: function (msg) {
+                        console.error(msg);
+                    }
+                });
+
+
+
+            }
+            function borrar(btn, codigo) {
+                console.log(codigo);
+                var respuesta = prompt(`Escribe OK para eliminar`);
+                if (respuesta == 'OK') {
+                    var fila = btn.closest('tr');
+
+                    $.ajax({
+                        method: 'POST',
+                        url: 'BorrarServlet',
+                        data: {
+                            codigo: codigo
+                        },
+                        success: function (msg) {
+                            console.log(msg);
+                            fila.remove();
+                            alert(msg.mensaje);
+                        },
+                        error: function (msg) {
+                            console.error(msg);
+                        }
+                    });
+                }
+            }
+            function monto()
+            {
+                
+            }
+
+        </script>
+    </body>
+</html>
